@@ -1,4 +1,5 @@
 import json
+import pprint
 import time
 
 from app import app, logging
@@ -145,4 +146,47 @@ def lmstudio_list_models():
         "object": "list"
     }
     return jsonify(response)
+
+
+@app.route('/v1/images/generations', methods=["POST"])
+def generate_image():
+    try:
+        post_json_data = request.json
+    except:
+        post_json_data = json.loads(request.data.decode())
+    pprint.pprint((post_json_data))
+    import base64
+    with open("./test.png","rb") as reader:
+        bin_image = reader.read(-1)
+        data = base64.encodebytes(bin_image).decode()
+
+    #  1024x1024, 1024x1792 or 1792x1024
+    # {'model': 'dall-e-2',
+    #  'n': 1,
+    #  'prompt': 'Hello! How can I assist you today?',
+    #  'response_format': 'b64_json',
+    #  'size': '512x512'}
+
+    # output
+    # {
+    #     "created": 1589478378,
+    #     "data": [
+    #         {
+    #             "url": "https://..."
+    #         },
+    #         {
+    #             "url": "https://..."
+    #         }
+    #     ]
+    # }
+    return {
+        "created": 1589478378,
+        "data": [
+            {
+                "b64_json": data
+            }
+        ]
+    }, 200
+
+
 

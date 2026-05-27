@@ -23,11 +23,12 @@ async def prompt_completion(
     post_request_data = {"model": model, "message": msg}
     logger.debug(f"Request Post Data: {post_request_data}")
 
-    return """
+    content = """
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nec felis eu lacus finibus laoreet non non arcu. Mauris et lorem at ligula aliquam sodales sit amet suscipit justo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In lectus libero, commodo quis finibus imperdiet, lobortis vitae ex. Cras commodo elit vel erat lobortis pretium. Nunc sagittis elementum ligula a aliquam. Nunc mollis est sodales enim feugiat dignissim. Nam et commodo orci. Quisque id semper nunc. Duis vel convallis elit. Donec dignissim eros in sapien consectetur sagittis. Donec est tortor, convallis non elit id, viverra luctus est. Nullam elementum, tortor eu mattis accumsan, diam lacus tristique elit, placerat viverra lacus urna in massa.
 
 Nunc ac arcu ex. Proin ultrices ultricies semper. Ut id mauris eget tortor tincidunt scelerisque. Sed eget urna at ipsum interdum dapibus ut non ipsum. Nam luctus, arcu posuere iaculis volutpat, est erat finibus ligula, eget iaculis diam leo elementum nisl. Integer congue nec turpis euismod consequat. Duis at sem vitae dolor ornare tristique. Duis dapibus nisi massa, sit amet tristique tortor tempus sit amet. Nunc ac mollis tortor. Cras at elit enim. Sed egestas eget ipsum cursus molestie. Aliquam et finibus nisi, at viverra mi. Sed mattis non magna a semper.
 """
+    return content, "", None
 
 
 async def list_agents(**kwargs):

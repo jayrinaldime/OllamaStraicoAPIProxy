@@ -1,4 +1,6 @@
-def response(response, model):
+def response(response, model, usage=None):
+    if usage is None:
+        usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
     return {
         "id": "chatcmpl-gg711phlqdwixyxif16bm",
         "object": "chat.completion",
@@ -11,9 +13,5 @@ def response(response, model):
                 "finish_reason": "stop",
             }
         ],
-        "usage": {
-            "prompt_tokens": 426,
-            "completion_tokens": 65,
-            "total_tokens": 491,
-        },
+        "usage": usage,
     }

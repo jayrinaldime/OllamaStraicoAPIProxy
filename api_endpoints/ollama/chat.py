@@ -38,7 +38,7 @@ async def ollamagenerate(request: Request):
         settings["max_tokens"] = options.get("max_tokens")
 
     if msg.get("stream") == False:
-        response, thinking_text = await prompt_completion(
+        response, thinking_text, _ = await prompt_completion(
             msg["prompt"], model=model, **settings
         )
         return JSONResponse(
@@ -55,7 +55,7 @@ async def ollamagenerate(request: Request):
                 "eval_duration": 4232710000,
             }
         )
-    response, thinking_text = await prompt_completion(request_msg, model=model)
+    response, thinking_text, _ = await prompt_completion(request_msg, model=model)
     response = fix_escaped_characters(response)
     return StreamingResponse(
         generate_ollama_stream(response, model), media_type="application/x-ndjson"
@@ -154,7 +154,7 @@ You must respond in valid JSON when using a function. Don't wrap the response in
         messages = new_messages
 
     request_msg = json.dumps(messages, indent=True, ensure_ascii=False)
-    response, thinking_text = await prompt_completion(
+    response, thinking_text, _ = await prompt_completion(
         request_msg, images, model, timeout=timeout, **settings
     )
     if not msg.get("think", False):

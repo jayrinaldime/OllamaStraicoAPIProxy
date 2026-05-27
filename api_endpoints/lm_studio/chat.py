@@ -172,14 +172,14 @@ Example:
     if isinstance(msg, list):
         images, msg = extract_images_from_messages(msg)
         if images is None or len(images) == 0:
-            response, thinking_text = await prompt_completion(
+            response, thinking_text, usage = await prompt_completion(
                 json.dumps(msg, indent=True, ensure_ascii=False),
                 model=model,
                 api_key=api_key,
                 **settings,
             )
         else:
-            response, thinking_text = await prompt_completion(
+            response, thinking_text, usage = await prompt_completion(
                 json.dumps(msg, indent=True, ensure_ascii=False),
                 images=images,
                 model=model,
@@ -187,7 +187,7 @@ Example:
                 **settings,
             )
     else:
-        response, thinking_text = await prompt_completion(
+        response, thinking_text, usage = await prompt_completion(
             json.dumps(msg, indent=True, ensure_ascii=False),
             model=model,
             api_key=api_key,
@@ -364,7 +364,7 @@ Example:
             streamed_response(original_response, model), media_type="text/event-stream"
         )
 
-    return JSONResponse(content=basic_response(original_response, model))
+    return JSONResponse(content=basic_response(original_response, model, usage=usage))
 
 
 @app.post("/v1/completions")
@@ -380,7 +380,7 @@ async def completions(request: Request):
     tracing_context.update_current_observation(input=dict(post_json_data))
     msg = post_json_data["prompt"]
     model = post_json_data.get("model") or "openai/gpt-3.5-turbo-0125"
-    response, thinking_text = await prompt_completion(msg, model=model, api_key=api_key)
+    response, thinking_text, _ = await prompt_completion(msg, model=model, api_key=api_key)
     response = fix_escaped_characters(response)
     return StreamingResponse(
         streamed_response(response, model), content_type="text/event-stream"
